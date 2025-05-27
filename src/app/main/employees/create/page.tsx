@@ -20,6 +20,7 @@ const CreateEmployeePage: React.FC = () => {
         try {
             await createEmployee(data);
             setMessage({ text: 'Employee created successfully', severity: 'success' });
+
         } catch (error) {
             setMessage({
                 text: error instanceof Error ? error.message : 'An unexpected error occurred',
