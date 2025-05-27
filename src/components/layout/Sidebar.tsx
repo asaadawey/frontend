@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Users, GitBranch, Plus, LayoutDashboard } from 'lucide-react';
+import { Users, Plus, LayoutDashboard } from 'lucide-react';
 import { APP_ROUTES } from '@/constants/appRoutes';
 
 const navigation = [

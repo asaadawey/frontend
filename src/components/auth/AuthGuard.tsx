@@ -6,6 +6,8 @@ import { Skeleton } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
+// AuthGuard component to protect routes based on authentication status
+
 interface AuthGuardProps {
     children: React.ReactNode;
     requireAuth?: boolean;

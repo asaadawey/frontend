@@ -3,7 +3,6 @@
 import React from "react";
 import { useEmployees } from "@/hooks/useEmployee";
 import { Avatar } from "@mui/material";
-import EmployeeRow from "@/components/employees/EmployeeRow";
 
 const EmployeesListPage = () => {
     const { employees, isLoading, error } = useEmployees();

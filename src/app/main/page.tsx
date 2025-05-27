@@ -1,9 +1,8 @@
 'use client';
 
 import { useEmployees } from '@/hooks/useEmployee';
-import { Tree, NodeApi, NodeRendererProps } from 'react-arborist';
-import { useRouter } from 'next/navigation';
-import { Alert, Box, Button, LinearProgress, Modal, Skeleton, Snackbar, useColorScheme } from '@mui/material';
+import { Tree, NodeApi, } from 'react-arborist';
+import { Alert, Skeleton, Snackbar } from '@mui/material';
 import EmployeeRow from '@/components/employees/EmployeeRow';
 import { useEffect, useState } from 'react';
 import EmployeeUpdateModal from '@/components/employees/EmployeeUpdateModal';
@@ -13,11 +12,16 @@ type MoveProps = { dragNodes: NodeApi[], parentNode: NodeApi, parentId: string, 
 
 type Operation = "change-manager" | "delete-reporting-to" | "delete-employee";
 
+// This page displays the organization hierarchy and allows users to manage employee reporting structures
+// It uses the `useEmployees` hook to fetch employee data and manage updates
+// It also uses the `react-arborist` library to render a tree structure of employees
+// The page allows users to drag and drop employees to change their reporting structure, or click on an employee to edit their details
 export default function HierarchyPage() {
-    const [newEmployeeProps, setNewEmployeeProps] = useState<{ newEmployeeDetails: EmployeeBasicInfo; newManagerInfo: EmployeeBasicInfo | undefined }>();
+
+    const [newEmployeeProps, setNewEmployeeProps] = useState<{ newEmployeeDetails: EmployeeBasicInfo; newManagerInfo: EmployeeBasicInfo | undefined }>(); // This state holds the details of the employee being updated or deleted
     const [errorMessage, setErrorMessage] = useState<string>();
-    const [operation, setOperation] = useState<Operation>();
-    const { getHierarchy, updateEmployee, isLoading, error, employees, fetchEmployees, deleteEmployee } = useEmployees();
+    const [operation, setOperation] = useState<Operation>(); // This state holds the current operation being performed (change manager, delete reporting to, or delete employee)
+    const { getHierarchy, updateEmployee, isLoading, error, employees, fetchEmployees, deleteEmployee } = useEmployees(); // This hook provides functions to fetch, update, and delete employees, as well as the current employee data
     const hierarchyData = getHierarchy();
 
 
@@ -27,7 +31,7 @@ export default function HierarchyPage() {
                 setErrorMessage("")
             }, 5000)
         }
-    }, [errorMessage])
+    }, [errorMessage]) // This effect clears the error message after 5 seconds
 
     const onEmployeeMove = (props: MoveProps) => {
         console.log({ props })
@@ -40,8 +44,6 @@ export default function HierarchyPage() {
                 newManagerInfo: props.parentNode.data
             });
         }
-
-
     }
 
     const onEmployeeParentReportingToRempve = (employeeId: number) => {
@@ -73,6 +75,8 @@ export default function HierarchyPage() {
         setOperation(undefined);
     }
 
+    // This function handles the confirmation of the modal after an employee is updated or deleted
+    // It performs the appropriate action based on the current operation and updates the employee data
     const onModalConfirmationSuccess = async () => {
         if (newEmployeeProps) {
             try {
@@ -135,7 +139,7 @@ export default function HierarchyPage() {
             <div className="mb-8">
                 <h1 className="text-2xl font-bold">Organization Hierarchy</h1>
                 <p className="mt-2">
-                    Explore your organization's structure and reporting relationships
+                    Explore your organization&apos;s structure and reporting relationships
                 </p>
                 <p>
                     You can <b>drag and drop</b> employees to change their reporting structure, or click on an employee to edit their details.
@@ -150,8 +154,8 @@ export default function HierarchyPage() {
                     overscanCount={1}
                     padding={25}
                     idAccessor={(node: Employee) => node.id.toString()}
-                    // No type is available
-                    //@ts-ignore 
+                    //
+                    //@ts-expect-error No type is available
                     onMove={onEmployeeMove}
                     data={hierarchyData} >
                     {({ node, style, dragHandle }) => (<div style={{ ...style }} ref={dragHandle} onClick={() => node.toggle()}>
@@ -159,6 +163,7 @@ export default function HierarchyPage() {
                             managerId={(node.data.managerId)}
                             id={node.data.id} name={node.data.name}
                             title={node.data.title}
+                            // eslint-disable-next-line react/no-children-prop
                             children={node.data.children}
                             onRemoveParentReportingToClick={(employeeId) => {
                                 onEmployeeParentReportingToRempve(employeeId)

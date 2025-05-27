@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import { Employee, CreateEmployeeRequest, UpdateEmployeeRequest } from '@/types/employee';
 import { apiClient } from '@/lib/api';
-import toast from 'react-hot-toast';
 import { API_ROUTES } from '@/constants/apiRoutes';
 
 export function useEmployees() {
@@ -19,7 +18,6 @@ export function useEmployees() {
             setEmployees(response);
         } catch (err: any) {
             setError(err.message);
-            toast.error('Failed to fetch employees');
         } finally {
             setIsLoading(false);
         }
@@ -29,10 +27,8 @@ export function useEmployees() {
         try {
             const newEmployee = await apiClient.post<Employee>(API_ROUTES.ADD_EMPLOYEE, employeeData);
             setEmployees(prev => [...prev, newEmployee]);
-            toast.success('Employee created successfully');
             return newEmployee;
         } catch (err: any) {
-            toast.error(err.message || 'Failed to create employee');
             throw err;
         }
     };
@@ -46,10 +42,8 @@ export function useEmployees() {
             setEmployees(prev =>
                 prev.map(emp => emp.id === employeeData.id ? updatedEmployee : emp)
             );
-            toast.success('Employee updated successfully');
             return updatedEmployee;
         } catch (err: any) {
-            toast.error(err.message || 'Failed to update employee');
             throw err;
         }
     };
@@ -58,9 +52,7 @@ export function useEmployees() {
         try {
             await apiClient.delete(API_ROUTES.DELETE_EMPLOYEE + id)
             setEmployees(prev => prev.filter(emp => emp.id !== id));
-            toast.success('Employee deleted successfully');
         } catch (err: any) {
-            toast.error(err.message || 'Failed to delete employee');
             throw err;
         }
     };

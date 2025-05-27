@@ -1,16 +1,15 @@
 'use client';
 
 import { EmployeeBasicInfo } from '@/types/employee';
-import { Avatar, Box, Button, Modal } from '@mui/material';
+import { Button, Modal } from '@mui/material';
 import EmployeeRow from './EmployeeRow';
-import { useEmployees } from '@/hooks/useEmployee';
 
 interface EmployeeUpdateModalProps {
     newManagerInfo: EmployeeBasicInfo | undefined
     newEmployeeInfo: EmployeeBasicInfo
     isDelete?: boolean
-    onSuccess: Function;
-    onDiscard: Function;
+    onSuccess: () => void;
+    onDiscard: () => void;
 }
 
 export default function EmployeeUpdateModal({ newManagerInfo, newEmployeeInfo, onDiscard, onSuccess, isDelete }: EmployeeUpdateModalProps) {
@@ -32,6 +31,7 @@ export default function EmployeeUpdateModal({ newManagerInfo, newEmployeeInfo, o
                 <div className='my-3'>
                     Please review the below changes
                 </div>
+                {/* If statement to render. If it's deleting the employee then render other stuff */}
                 {!isDelete ? (<><div className='my-3'>
                     New employee info
                 </div>

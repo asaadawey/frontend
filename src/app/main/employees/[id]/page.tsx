@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import EmployeeForm from '@/components/employees/EmployeeForm';
+import EmployeeForm, { EmployeeFormValues } from '@/components/employees/EmployeeForm';
 import { useEmployees } from '@/hooks/useEmployee';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
@@ -26,7 +26,7 @@ const EditEmployeePage: React.FC = () => {
 
     const employee = employees?.find(emp => emp.id === Number(id));
 
-    const handleSubmit = async (values: any) => {
+    const handleSubmit = async (values: EmployeeFormValues) => {
 
         if (employee) {
             try {
@@ -35,8 +35,8 @@ const EditEmployeePage: React.FC = () => {
                 setTimeout(() => {
                     router.push(APP_ROUTES.DASHBOARD);
                 }, 1000);
-            } catch (err) {
-                setSnackbar({ open: true, message: 'Failed to update employee.', severity: 'error' });
+            } catch {
+                setSnackbar({ open: true, message: 'Failed to update employee. ', severity: 'error' });
             }
         }
 

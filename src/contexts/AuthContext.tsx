@@ -1,14 +1,14 @@
 'use client';
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { User, LoginRequest, RegisterRequest } from '@/types/auth';
+import { User, LoginRequest } from '@/types/auth';
 import { AuthService } from '@/lib/auth';
 import toast from 'react-hot-toast';
 
 interface AuthContextType {
     user: User | null;
     login: (credentials: LoginRequest) => Promise<void>;
-    register: (userData: RegisterRequest) => Promise<void>;
+    // register: (userData: RegisterRequest) => Promise<void>;
     logout: () => void;
     errorMessage: string;
     isLoading: boolean;
@@ -53,20 +53,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         }
     };
 
-    const register = async (userData: RegisterRequest) => {
-        try {
-            setErrorMessage("");
-            setIsLoading(true);
-            const response = await AuthService.register(userData);
-            setUser(response.user);
-            toast.success('Registration successful!');
-        } catch (error: any) {
-            setErrorMessage(error.message || 'Registration failed');
-            throw error;
-        } finally {
-            setIsLoading(false);
-        }
-    };
+    // const register = async (userData: RegisterRequest) => {
+    //     try {
+    //         setErrorMessage("");
+    //         setIsLoading(true);
+    //         const response = await AuthService.register(userData);
+    //         setUser(response.user);
+    //         toast.success('Registration successful!');
+    //     } catch (error: any) {
+    //         setErrorMessage(error.message || 'Registration failed');
+    //         throw error;
+    //     } finally {
+    //         setIsLoading(false);
+    //     }
+    // };
 
     const logout = () => {
         AuthService.logout();
@@ -77,7 +77,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const value = {
         user,
         login,
-        register,
+        // register,
         logout,
         isLoading,
         errorMessage,

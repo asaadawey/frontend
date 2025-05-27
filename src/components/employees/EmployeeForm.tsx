@@ -11,7 +11,6 @@ import {
     MenuItem,
     TextField,
     Typography,
-    Paper,
     FormControl,
     InputLabel,
     Select,
@@ -53,7 +52,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
         formState: { errors },
     } = useForm<EmployeeFormValues>({
         defaultValues: initialValues,
-        //@ts-ignore
+        //@ts-expect-error : Resolver type mismatch
         resolver: yupResolver(schema),
     });
 
@@ -74,7 +73,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
             </Typography>
             <Box
                 component="form"
-                //@ts-ignore
+                // @ts-expect-error: Resolver type mismatch
                 onSubmit={handleSubmit(onSubmit)}
                 sx={{ display: 'flex', flexDirection: 'row', gap: 3 }}
             >

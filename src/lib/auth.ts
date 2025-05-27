@@ -1,10 +1,11 @@
-import { User, LoginRequest, RegisterRequest, AuthResponse } from '@/types/auth';
+import { User, LoginRequest, AuthResponse } from '@/types/auth';
 import { apiClient } from './api';
 import { API_ROUTES } from '@/constants/apiRoutes';
+import envVars from '@/config/environment'
 
 export class AuthService {
-    private static readonly TOKEN_KEY = 'Authorization';
-    private static readonly USER_KEY = 'auth-user';
+    private static readonly TOKEN_KEY = envVars.authorization.headerKey;
+    private static readonly USER_KEY = envVars.localStorage.userKey;
 
     static async login(credentials: LoginRequest): Promise<AuthResponse> {
         const response = await apiClient.post<AuthResponse>(API_ROUTES.LOGIN, credentials);
@@ -15,14 +16,14 @@ export class AuthService {
         return response;
     }
 
-    static async register(userData: RegisterRequest): Promise<AuthResponse> {
-        const response = await apiClient.post<AuthResponse>(API_ROUTES.REGISTER, userData);
+    // static async register(userData: RegisterRequest): Promise<AuthResponse> {
+    //     const response = await apiClient.post<AuthResponse>(API_ROUTES.REGISTER, userData);
 
-        localStorage.setItem(this.TOKEN_KEY, response.token);
-        localStorage.setItem(this.USER_KEY, JSON.stringify(response.user));
+    //     localStorage.setItem(this.TOKEN_KEY, response.token);
+    //     localStorage.setItem(this.USER_KEY, JSON.stringify(response.user));
 
-        return response;
-    }
+    //     return response;
+    // }
 
     static logout(): void {
         localStorage.removeItem(this.TOKEN_KEY);

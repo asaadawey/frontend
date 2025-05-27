@@ -6,7 +6,7 @@ import { useColorScheme } from '@mui/material/styles';
 import { LogOut, User, Moon, Sun } from 'lucide-react';
 
 export default function Header() {
-    const { setMode, mode, ...t } = useColorScheme();
+    const { setMode, mode } = useColorScheme();
     const { user, logout } = useAuth();
 
     const onColorModeClick = () => {
